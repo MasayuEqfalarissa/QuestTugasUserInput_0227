@@ -100,6 +100,14 @@ fun FormBiodata(modifier: Modifier = Modifier) {
                             fontSize = MaterialTheme.typography.headlineMedium.fontSize,
                             fontWeight = FontWeight.Bold
                         )
+
+                        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+
+                        Text(
+                            text = stringResource(R.string.subtitle),
+                            color = colorResource(R.color.subtitle_color),
+                            fontSize = MaterialTheme.typography.bodySmall.fontSize
+                        )
                     }
                 }
             }
