@@ -2,7 +2,13 @@ package com.example.tugasuserinput_prak4
 
 import android.widget.Button
 import android.widget.Space
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,8 +36,12 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.Button
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -39,6 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -47,6 +59,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+@OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
 fun FormBiodata(modifier: Modifier = Modifier) {
@@ -60,9 +77,78 @@ fun FormBiodata(modifier: Modifier = Modifier) {
     var isUiUxChecked by remember { mutableStateOf(false) }
     var isWebChecked by remember { mutableStateOf(false) }
 
+    var showDatePicker by remember { mutableStateOf(false) }
+    var showResultDialog by remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState()
+
+
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val msgSuccess = stringResource(id = R.string.snackbar_message)
+
+
+    if (showDatePicker) {
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        datePickerState.selectedDateMillis?.let { millis ->
+                            val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                            textTglLahir = formatter.format(Date(millis))
+                        }
+                        showDatePicker = false
+                    }
+                ) {
+                    Text(text = stringResource(R.string.btn_ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) {
+                    Text(text = stringResource(R.string.btn_batal))
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+
+    if (showResultDialog) {
+        LaunchedEffect (Unit) {
+            delay(5000)
+            showResultDialog = false
+        }
+
+        val selectedSkills = mutableListOf<String>()
+        if (isAndroidChecked) selectedSkills.add(stringResource(R.string.android))
+        if (isUiUxChecked) selectedSkills.add(stringResource(R.string.UiUx))
+        if (isWebChecked) selectedSkills.add(stringResource(R.string.web))
+        val skillText = selectedSkills.joinToString(", ")
+
+        AlertDialog(
+            onDismissRequest = { showResultDialog = false },
+            title = {
+                Text(
+                    text = "Data Biodata Anda",
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(text = "Nama: $textNamaDepan $textNamaBelakang")
+                    Text(text = "Email: $textEmail")
+                    Text(text = "Tgl Lahir: $textTglLahir")
+                    Text(text = "Experience: $textExperience")
+                    Text(text = "Skill: $skillText")
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showResultDialog = false }) {
+                    Text(text = stringResource(R.string.btn_ok))
+                }
+            }
+        )
+    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -76,9 +162,11 @@ fun FormBiodata(modifier: Modifier = Modifier) {
             Image(
                 painter = painterResource(R.drawable.nailong),
                 contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .height(dimensionResource(R.dimen.spacing_banner))
+                    .fillMaxWidth()
+                    .height(240.dp)
+                    .align(Alignment.TopCenter)
             )
 
             Column(
@@ -137,7 +225,7 @@ fun FormBiodata(modifier: Modifier = Modifier) {
                             )
                             OutlinedTextField(
                                 value = textNamaBelakang,
-                                onValueChange = { textNamaDepan = it },
+                                onValueChange = { textNamaBelakang = it },
                                 label = { Text(text = stringResource(R.string.nama_belakang)) },
                                 singleLine = true,
                                 shape = MaterialTheme.shapes.medium,
@@ -162,20 +250,37 @@ fun FormBiodata(modifier: Modifier = Modifier) {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
                         ) {
-                            OutlinedTextField(
-                                value = textTglLahir,
-                                onValueChange = { textTglLahir = it },
-                                label = { Text(text = stringResource(R.string.tgl_lahir)) },
-                                trailingIcon = {
-                                    Icon(
-                                        painter = painterResource(R.drawable.icon_calendar),
-                                        contentDescription = null
+                            // Kolom Tgl Lahir dengan Box agar bisa diklik memunculkan kalender tanpa error
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickable { showDatePicker = true }
+                            ) {
+                                OutlinedTextField(
+                                    value = textTglLahir,
+                                    onValueChange = {},
+                                    readOnly = true,
+                                    enabled = false, // Menonaktifkan interaksi teks bawaan agar fokus sepenuhnya ke klik dialog
+                                    label = { Text(text = stringResource(R.string.tgl_lahir)) },
+                                    trailingIcon = {
+                                        Icon(
+                                            painter = painterResource(R.drawable.icon_calendar),
+                                            contentDescription = null
+                                        )
+                                    },
+                                    singleLine = true,
+                                    shape = MaterialTheme.shapes.medium,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                                        disabledBorderColor = MaterialTheme.colorScheme.outline,
+                                        disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
-                                },
-                                singleLine = true,
-                                shape = MaterialTheme.shapes.medium,
-                                modifier = Modifier.weight(1f)
-                            )
+                                )
+                            }
+
                             OutlinedTextField(
                                 value = textExperience,
                                 onValueChange = { textExperience = it },
@@ -185,7 +290,6 @@ fun FormBiodata(modifier: Modifier = Modifier) {
                                 modifier = Modifier.weight(1f)
                             )
                         }
-
                         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
 
                         Text(
@@ -227,14 +331,9 @@ fun FormBiodata(modifier: Modifier = Modifier) {
                         Button(
                             onClick = {
                                 coroutineScope.launch {
-                                    val job = launch {
-                                        snackbarHostState.showSnackbar(
-                                            message = msgSuccess,
-                                            duration = SnackbarDuration.Indefinite
-                                        )
-                                    }
-                                    delay(5000) // Tepat 5 detik
-                                    job.cancel()
+                                    showResultDialog = true
+                                    delay(5000) // Tampil selama tepat 5 detik
+                                    showResultDialog = false
                                 }
                             },
                             shape = MaterialTheme.shapes.medium,
