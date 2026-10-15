@@ -13,4 +13,9 @@
     <string name="web">Web</string>
     <string name="proceed">Proceed</string>
     <string name="snackbar_message">Biodata berhasil diproses!</string>
+
+
+    <string name="dialog_title">Data Biodata Anda</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_batal">Batal</string>
 </resources>
