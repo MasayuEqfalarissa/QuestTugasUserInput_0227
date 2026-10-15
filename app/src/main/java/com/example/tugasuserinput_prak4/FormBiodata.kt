@@ -1,7 +1,9 @@
 package com.example.tugasuserinput_prak4
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -14,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 
 @Composable
 fun FormBiodata(modifier: Modifier = Modifier) {
@@ -39,6 +43,14 @@ fun FormBiodata(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-        ){}
+        ){
+            Image(
+                painter = painterResource(R.drawable.nailong),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .height(dimensionResource(R.dimen.spacing_banner))
+            )
+        }
     }
 }
