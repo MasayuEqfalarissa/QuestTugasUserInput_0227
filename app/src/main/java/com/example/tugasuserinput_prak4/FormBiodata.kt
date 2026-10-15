@@ -18,4 +18,9 @@ fun FormBiodata(modifier: Modifier = Modifier) {
     var textTglLahir by remember { mutableStateOf("") }
     var textExperience by remember { mutableStateOf("") }
 
+    var isAndroidChecked by remember { mutableStateOf(false) }
+    var isUiUxChecked by remember { mutableStateOf(false) }
+    var isWebChecked by remember { mutableStateOf(false) }
+
+
 }
