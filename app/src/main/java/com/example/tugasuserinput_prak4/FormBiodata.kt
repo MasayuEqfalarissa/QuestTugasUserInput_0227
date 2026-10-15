@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -186,6 +187,34 @@ fun FormBiodata(modifier: Modifier = Modifier) {
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.fillMaxWidth()
                         )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = isAndroidChecked,
+                                    onCheckedChange = { isAndroidChecked = it }
+                                )
+                                Text(text = stringResource(R.string.android))
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = isUiUxChecked,
+                                    onCheckedChange = { isUiUxChecked = it }
+                                )
+                                Text(text = stringResource(R.string.UiUx))
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = isWebChecked,
+                                    onCheckedChange = { isWebChecked = it }
+                                )
+                                Text(text = stringResource(R.string.web))
+                            }
+                        }
                     }
                 }
             }
