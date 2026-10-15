@@ -1,5 +1,6 @@
 package com.example.tugasuserinput_prak4
 
+import android.widget.Button
 import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -22,9 +24,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.Button
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +45,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun FormBiodata(modifier: Modifier = Modifier) {
@@ -215,9 +221,39 @@ fun FormBiodata(modifier: Modifier = Modifier) {
                                 Text(text = stringResource(R.string.web))
                             }
                         }
+
+                        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
+
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    val job = launch {
+                                        snackbarHostState.showSnackbar(
+                                            message = msgSuccess,
+                                            duration = SnackbarDuration.Indefinite
+                                        )
+                                    }
+                                    delay(5000) // Tepat 5 detik
+                                    job.cancel()
+                                }
+                            },
+                            shape = MaterialTheme.shapes.medium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorResource(id = R.color.button_color)
+                            )
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.proceed),
+                                color = colorResource(id = R.color.button_text_color)
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
+
