@@ -22,5 +22,7 @@ fun FormBiodata(modifier: Modifier = Modifier) {
     var isUiUxChecked by remember { mutableStateOf(false) }
     var isWebChecked by remember { mutableStateOf(false) }
 
-
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    val msgSuccess = stringResource(id = R.string.snackbar_message)
 }
