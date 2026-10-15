@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -147,6 +148,36 @@ fun FormBiodata(modifier: Modifier = Modifier) {
                             shape = MaterialTheme.shapes.medium,
                             modifier = Modifier.fillMaxWidth()
                         )
+
+                        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+                        ) {
+                            OutlinedTextField(
+                                value = textTglLahir,
+                                onValueChange = { textTglLahir = it },
+                                label = { Text(text = stringResource(R.string.tgl_lahir)) },
+                                trailingIcon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.icon_calendar),
+                                        contentDescription = null
+                                    )
+                                },
+                                singleLine = true,
+                                shape = MaterialTheme.shapes.medium,
+                                modifier = Modifier.weight(1f)
+                            )
+                            OutlinedTextField(
+                                value = textExperience,
+                                onValueChange = { textExperience = it },
+                                label = { Text(text = stringResource(R.string.experience)) },
+                                singleLine = true,
+                                shape = MaterialTheme.shapes.medium,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
                     }
                 }
             }
