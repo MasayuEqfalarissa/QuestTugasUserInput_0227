@@ -2,19 +2,23 @@ package com.example.tugasuserinput_prak4
 
 import android.widget.Space
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -108,6 +112,30 @@ fun FormBiodata(modifier: Modifier = Modifier) {
                             color = colorResource(R.color.subtitle_color),
                             fontSize = MaterialTheme.typography.bodySmall.fontSize
                         )
+
+                        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+                        ) {
+                            OutlinedTextField(
+                                value = textNamaDepan,
+                                onValueChange = { textNamaDepan = it },
+                                label = { Text(text = stringResource(R.string.nama_depan)) },
+                                singleLine = true,
+                                shape = MaterialTheme.shapes.medium,
+                                modifier = Modifier.weight(1f)
+                            )
+                            OutlinedTextField(
+                                value = textNamaBelakang,
+                                onValueChange = { textNamaDepan = it },
+                                label = { Text(text = stringResource(R.string.nama_belakang)) },
+                                singleLine = true,
+                                shape = MaterialTheme.shapes.medium,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
                     }
                 }
             }
